@@ -1,0 +1,17 @@
+C:\app\oracle\product\18.0.0\dbhomeXE\rdbms\admin의 scott.sql을, visual code로 열고,
+
+developer에서 sys.pdb계정안에서 수행(f5) 그러면 scott계정이 만들어진다.
+--------------------------------------------------------------------------------
+
+cmd에서 sqlplus scott/oracle@pdb로 접속 확인, 그후 show user, 계정 이름 확인
+그후, select tname from tab;으로 테이블들 확인 끝.
+--------------------------------------------------------------------------------
+
+visual code에서 tns alias로 지정하고, admin location은
+C:\app\oracle\product\18.0.0\dbhomeXE\network\admin으로 설정하고, wallet은 uncheck한후, 
+tns alias는 pdb로 설정,
+그후, username은 SCOTT, password는 oracle
+
+save password, Connection name에서 뒤에 PDB는 pdb로 바꿔준다.그리고 create.
+
+
