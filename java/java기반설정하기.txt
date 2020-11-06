@@ -1,0 +1,152 @@
+========================java기반 설정========================
+
+pom.xml에서 이것을 추가.
+
+		<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+				<version>3.3.1</version>
+				
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+		</plugin>
+
+
+
+
+========================RootConfig에 추가할것========================
+
+@Log4j
+@NoArgsConstructor
+
+@Configuration
+@MapperScan(basePackages= {"com.zerock.myapp"})
+-----------------------------------------------
+	@Bean(name="hikariConfig")
+	public HikariConfig hikariConfig() {
+		log.info(">>> hikariConfig() invoked.");
+		
+		HikariConfig config = new HikariConfig();
+		
+		config.setDriverClassName("oracle.jdbc.driver.OracleDriver");
+		config.setJdbcUrl("jdbc:oracle:thin:@DB202009161613_high?TNS_ADMIN=C:/app/oracle/Wallet_DB202009161613/");
+		config.setUsername("ADMIN");
+		config.setPassword("Shqmffptm820");		
+		
+		return config;		
+	}	//hikariConfig
+	
+	@Primary
+	@Bean(name="hikariDataSource", destroyMethod="close")
+	public HikariDataSource hikariDataSource(HikariConfig hikariConfig) {
+		log.info(">>> hikariDataSource() invoked.");
+		
+		HikariDataSource dataSource = new HikariDataSource(hikariConfig);
+		
+		return dataSource;
+	}	//hikariDataSource
+
+
+	@Bean(name="sqlSessionFactory")
+	public SqlSessionFactory sqlSessionFactory(
+			javax.sql.DataSource dataSource, ApplicationContext ctx) throws Exception{
+		
+		log.info(">>> sqlSessionFactory(dataSource, ctx) invoked.");
+		
+		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
+		
+		//******************************************************
+		//1.Set Data Source			
+		//******************************************************
+		sqlSessionFactoryBean.setDataSource(dataSource);
+		
+		//******************************************************
+		//2.Set MyBatis Configuration			
+		//******************************************************
+		sqlSessionFactoryBean.
+			setConfigLocation(
+					new PathMatchingResourcePatternResolver().
+					getResource("classpath:mybatis-config.xml")
+					);
+		
+		//******************************************************
+		//3.Set MyBatis Mapper				
+		//******************************************************
+//		PathMatchingResourcePatternResolver mapperResolver = 
+//				new PathMatchingResourcePatternResolver();
+		
+//		sqlSessionFactoryBean.
+//			setMapperLocations(
+//					mapperResolver.getResources("classpath:mapper/**/*Mapper.xml")
+//					);		
+		
+		return sqlSessionFactoryBean.getObject();		
+	}	//sqlSessionFactory
+	
+	
+	@Bean(name="sqlSession", destroyMethod="clearCache")
+	public SqlSession sqlSession(
+			ApplicationContext ctx, SqlSessionFactory sqlSessionFactory
+			) throws Exception {
+		
+		log.info(">>> sqlSession(dataSource, ctx) invoked.");
+		
+		SqlSession sqlSession = new SqlSessionTemplate(sqlSessionFactory);
+		
+		return sqlSession;		
+	}	//sqlSession
+
+
+
+========================ServletConfig에 추가할것========================
+@NoArgsConstructor
+@Log4j
+
+@Configuration
+@EnableWebMvc
+@ComponentScan(basePackages= {"com.zerock.myapp"})
+-------------------------------------------------------
+
+
+========================WebConfig에 추가할것========================
+
+	//Web.xml에서 utf8설정한것과, NoHandlerFound 예외메세지를 위한 오버라이드
+	@Override
+	protected Filter[] getServletFilters() {
+		log.info("getServletFilters() invoked.");
+		
+		CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
+		
+		encodingFilter.setEncoding("utf8");
+		encodingFilter.setForceEncoding(true);
+		
+		return new Filter[] {encodingFilter};
+	}	//getServletFilters
+	
+
+	@Override
+	protected void customizeRegistration(Dynamic registration) {
+		log.info("customizeRegistration() invoked.");
+		
+		registration.setInitParameter(
+				"throwExceptionIfNoHandlerFound",
+				"true");
+	}	//customizeRegistration
+
+
+
+
+========================test할때 넣을 어노테이션========================
+
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes= {
+		RootConfig.class,
+		ServletConfig.class,
+		WebConfig.class
+	})
+@WebAppConfiguration
+
+@Log4j
+@NoArgsConstructor
+

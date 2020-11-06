@@ -1,0 +1,124 @@
+===================dependencies 추가해야될것!===================
+
+1. spring-test
+2. spring-jdbc
+3. spring-tx
+4. slf4j-api
+6. slf4j-log4j12
+5. jcl-over-slf4j
+6. lombok
+7. HikariCP
+8. tomcat-jdbc
+9. mybatis
+10. mybatis-spring
+11. log4jdbc-log4j2-jdbc4.1
+
+
+
+
+===================Web.xml에서 수정 및 추가해야되는것.===================
+
+	<!-- Processes application requests -->
+	<servlet>
+		<servlet-name>appServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
+		</init-param>
+		
+		<init-param>
+			<param-name>throwExceptionIfNoHandlerFound</param-name>
+			<param-value>true</param-value>			
+		</init-param>
+		
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+		
+	<servlet-mapping>
+		<servlet-name>appServlet</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	
+	
+	<!-- ============================================================== -->
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>utf8</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+
+
+
+===================root-context에서 수정할것(connection through hikari)===================
+
+
+	<!-- 1. HikariCP -->
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig"
+		primary="true">
+
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@PDB" />
+		<property name="username" value="HR" />
+		<property name="password" value="oracle" />
+	</bean>
+
+	<bean 
+		id="hikariDataSource" 
+		class="com.zaxxer.hikari.HikariDataSource"
+		destroy-method="close"
+		primary="false">
+		
+		<constructor-arg ref="hikariConfig" name="configuration"/>
+	</bean>
+
+
+
+	<!-- sqlSessionFactory + mybatis-spring -->
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean" 
+		primary="false">
+		
+		<property name="dataSource" ref="hikariDataSource" />
+		<property name="configLocation" value="classpath:/mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath*:mybatis/**/*Mapper.xml" />	
+	</bean>	
+
+	<!-- sqlSession -->
+	<bean 
+		id="sqlsession" 
+		class="org.mybatis.spring.SqlSessionTemplate"
+		destroy-method="clearCache"
+		primary="false">
+		
+		<constructor-arg ref="sqlSessionFactory" name="sqlSessionFactory" />
+	</bean>
+	
+	
+	<!-- scan -->
+	<mybatis-spring:scan base-package="com.zerock.myapp"/>
+	
+	//Namespaces에서 beans, context, mybatis-spring  -> check 해주기.
+
+
+
+===================sqlSessionFactory + mybatis 설정후===================
+src/main/resources밑에, mybatis 폴더를 만들기. 그리고 그 밑에 mapper1 이런거 만들기(만드려면)
+그후, resources밑에, mybatis-config.xml파일 만들기.
+(하지만,,, mapper파일이 없으면, 오류가 나므로, 테스트 할때는 지우자.)
+
+
+
+===================이후 테스트 하기===================
+src/test/java밑에 persistence같은 패키지 만들고, 테스트 클래스 생성 후 테스트.

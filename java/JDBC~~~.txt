@@ -1,0 +1,24 @@
+	JDBC driver를 이용한 데이터 베이스를 프로그램할때,
+핵심이 되는 클래스/인터페이스
+	
+	java.sql.DriverManager		(class)
+	java.sql.Connection		(interface)
+	java.sql.Statement		(interface)	-dynamic sql(사용 비추. 성능을 떨어뜨림)
+	java.sql.PreparedStatement	(interface)	-prepared sql
+	java.sql.ResultSet		(interface)
+	java.sql.SQLException		(class)	-chekced exception
+
+
+	Oracle9i		->Internet-based DB
+	Oracle11g		->Grid Computing based DB
+	Oracle18c		->Cloud-based DB
+	
+	Cloud Computing
+		- Grid Computing + Utility Computing
+
+
+	Oracle Instance = 
+		Oracle Background Processes + SGA(System Global Area)
+
+	
+	Oracle 최소구성 = Oracle Instance + Oracle Listener

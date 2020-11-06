@@ -1,0 +1,29 @@
+backend 3계층
+
+	presentation
+
+	DataBase		business
+
+	persistence
+
+
+
+
+
+
+VO 		-> 테이블의 한개의 레코드를 그대로 저장하기 위한 클래스.
+
+만드는 방법 	-> VO 클래스이름은: 테이블명 + VO
+		-> VO 클래스필드는: 테이블의 모든 컬럼을 포함
+		-> VO 필드의이름은: 테이블의 컬럼명과 일치
+		-> VO 필드의타입은: 테이블의 각 컬럼의 타입과 일치	(자바타입으로)
+
+VO클래스는	-> Immutable하게 해야한다.(변하지 않게)
+		-> 한개의 레코드를 최초에 저장한 이후, 필드값을 변경 못하게해야한다.
+
+따라서, lombok annotation을 이용한다.( @Data(DTO전용) | @Value(VO전용) )
+
+
+VO는 DB의 데이터를 frontend로 보내주기 위한 클래스.(EL을 사용한다)
+
+DTO는 frontend의 데이터를 수집해서(Get이나 Post, name,age설정한거처럼) 서버로 보내준다.
