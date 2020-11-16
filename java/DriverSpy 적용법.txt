@@ -1,0 +1,43 @@
+JDBC Driver Spy 의 적용조건
+
+1. log4jdbc-log4j2-jdbc4.1 이라는 아티팩트ID를 가진 파일을 pom.xml의 dependencies에 추가.
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+2. 위에서 추가한 라이브러리의 설정파일을 생성한다.
+	src/main/resources
+	src/test/resources
+	의 폴더 아래에 log4jdbc.log4j2.properties 라는 파일 생성
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+3. 설정 파일의 내용
+	log4jdbc.spylogdelegator.name=net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+4. root-context.xml에서 DataSource 설정 변경하기
+	가. Driver Class 이름 변경
+		-net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+	나. JDBC URL 변경
+		-jdbc:log4jdbc:oracle:thin:@~~~~
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+5. 두개의 log4j.xml 파일을 수정한다.
+
+	<!-- log4jdbc.log4j2 -->
+	<logger name="jdbc.sqlonly">
+		<level value="info" />
+	</logger>
+	
+	<logger name="jdbc.sqltiming">
+		<level value="info" />
+	</logger>
+	
+	<logger name="jdbc.audit">
+		<level value="warn" />
+	</logger>
+	
+	<logger name="jdbc.resultset">
+		<level value="warn" />
+	</logger>
+	
+	<logger name="jdbc.resultsettable">
+		<level value="info" />
+	</logger>
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+6. DataSource 연결테스트 재수행
+
