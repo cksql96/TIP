@@ -1,0 +1,23 @@
+객체의 직렬화(Serialization)
+자바객체 -> 바이트열로 바꾸는 작업
+메소드 -> writeObject(객체)
+
+
+객체의 역직렬화
+바이트열 -> 자바객체
+메소드 readObejct()
+원래의 객체로 다시 강제 형변환
+
+
+
+객체의 (역) 직렬화가 가능하려면 이 객체를 찍어낸 클래스가 반드시
+java.io.serializable인터페이스를 구현하고있어야한다.
+
+
+
+
+객체의 직렬화 <-> 역직렬화 상호 작업에서 사용되었던, XXX.class 파일의 serialVersionUID의 값은
+반드시 같아야한다!
+
+serialVersionUID : xxx.java 파일을 컴파일 할 때마다 자바 컴파일러가 무작위로 생성한
+long 타입의 정수값을 가지고, 이 버젼값이 바로, xxx.class의 버젼이다.
