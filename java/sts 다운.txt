@@ -1,0 +1,16 @@
+spring.io 들어가기.
+projects spring tools4 들가서 다운.
+
+jar파일 실행.
+lombok 설치
+
+.ini파일 열어서,
+-vm
+C:/app/Java/jdk1.8.0_261/bin
+추가하기
+
+help - eclipse marketplace에서 spring 다운받기. 4랑 3
+
+perspective에서 spring으로 전환.
+
+프로젝트 만들때, spring legacy로.
