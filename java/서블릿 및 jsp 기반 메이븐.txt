@@ -1,0 +1,40 @@
+서블릿과, JSP기반의 메이븐 기반 프로젝트 만들기
+
+우클릭 -> new -> other -> maven Project -> next -> next -> webapp -> next
+
+
+추가할 dependencies
+
+1.log4j
+
+2.slf4j-api
+
+3.jcl-over-slf4j
+
+4.slf4j-log4j12
+
+5.javax.servlet-api
+
+6.javax.servlet.jsp-api
+
+7.jstl-api
+
+8.junit
+---------------------------
+
+9.lombok
+
+10.HikariCP
+
+11.tomcat-jdbc
+
+12.mybatis
+
+13.log4jdbc-log4j2-jdbc4.1
+
+
+log4j.xml
+log4jdbc.log4j2.properties
+mybatis-config.xml
+
+
