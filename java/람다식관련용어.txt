@@ -1,0 +1,8 @@
+람다식 관련된 용어
+
+1. Functional Interface
+	- 추상메소드가 오직 단 1개만 선언되어 있는 인터페이스를 의미
+	- 상수나, default, static method는 있던 없던 상관없다.
+
+2. Target Type
+	- 람다식으로 구현할 Functional Interface를 "타겟타입"이라 부른다.
