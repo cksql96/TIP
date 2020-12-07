@@ -1,0 +1,49 @@
+스프링 순서
+	front controller
+	controller
+	service
+	dao
+	mybatis
+	db
+
+
+
+interceptor는 총 세번을 거친다.
+
+front controller 이후에 호출,
+controller 이후에 호출,
+jsp호출이 완료된 후 호출
+
+
+
+restController사용할때 편리한 작업을 위해 4개의 dependencies를 추가해라.
+
+jackson-databind
+
+
+jackson-dataformat-xml
+
+
+jackson-datatype-jsr310
+
+gson
+
+
+
+
+
+
+Security를 사용하기 위해선, 4개의 dependencies를 추가해라
+
+spring-security-core
+
+spring-security-web
+
+spring-security-config
+
+spring-security-taglibs
+
+버전은 스프링을 따라가면 된다.
+<version>${org.springframework-version}</version>
+
+또한 사용하기 위해선, security-context.xml을 만들어야되는데, 이는 스프링을 봐라.
